@@ -2,6 +2,9 @@ parameters:
   twitch.client.id: '%env(TWITCH_CLIENT_ID)%'
   twitch.client.secret: '%env(TWITCH_CLIENT_SECRET)%'
   twitch.broadcaster_id: '%env(TWITCH_BROADCASTER_ID)%'
+  social_networks.youtube: '@@toham'
+  social_networks.twitter: '@@toham_tech'
+  social_networks.github: '@@TBoileau'
 
 services:
   _defaults:
@@ -13,8 +16,8 @@ services:
       string $twitchBroadcasterId: '%twitch.broadcaster_id%'
 
   App\:
-    resource: '../src/'
+    resource: "../src/"
     exclude:
-      - '../src/DependencyInjection/'
-      - '../src/Entity/'
-      - '../src/Kernel.php'
+      - "../src/DependencyInjection/"
+      - "../src/Entity/"
+      - "../src/Kernel.php"

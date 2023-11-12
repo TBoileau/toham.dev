@@ -12,24 +12,25 @@
 
   > .chat-title {
     position: absolute;
-    bottom: 6rem;
-    left: -3.4rem;
+    bottom: 8.1rem;
+    left: -5.5rem;
     display: flex;
     align-items: center;
     font-weight: 400;
     transform: rotate(-90deg);
-    gap: 1rem;
+    gap: 2rem;
 
     > h1 {
+      width: 150px;
+      height: 2px;
+      background: #FFFFFF;
       color: #FFFFFF;
-      font-size: 2rem;
-      line-height: 2rem;
+      text-transform: uppercase
     }
 
     > hr {
-      width: 100px;
-      height: 2px;
-      background: #FFFFFF;
+      font-size: 2rem;
+      line-height: 2rem;
       content: '';
     }
   }
@@ -57,7 +58,7 @@
         width: fit-content;
         padding: 0.3rem 0.6rem;
         margin: 0;
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
         background: #FF8D74;
         border-radius: 5px;
         color: #FFF;
@@ -70,7 +71,7 @@
         z-index: 1;
         padding: .5rem 1rem;
         margin: -.25rem 0 0 1rem;
-        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
         background: #FFF;
         border-radius: 5px;
         color: #00153F;
