@@ -6,18 +6,33 @@ namespace App\Controller;
 
 use App\Twitch\OAuth\Model\TwitchAuthorization;
 use App\Twitch\OAuth\TwitchAuthenticatorInterface;
-use App\Twitch\TwitchProviderInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/twitch', name: 'twitch_')]
 final class TwitchController extends AbstractController
 {
+    #[Route('/overlays/{overlay}', name: 'overlay', requirements: ['overlay' => '\w+'], methods: [Request::METHOD_GET])]
+    public function overlay(string $overlay, #[TaggedLocator('twig.component', indexAttribute: 'key')] ContainerInterface $components): Response
+    {
+        $componentName = sprintf('twitch_overlay_%s', $overlay);
+
+        if (!$components->has($componentName)) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('twitch/overlay.html.twig', ['overlay' => $componentName]);
+    }
+
     #[Route('/get-authorization', name: 'get_authorization', methods: [Request::METHOD_GET])]
-    public function getAuthorization(Request $request, TwitchAuthenticatorInterface $twitchAuthenticator, TwitchProviderInterface $twitchProvider): RedirectResponse
+    public function getAuthorization(Request $request, TwitchAuthenticatorInterface $twitchAuthenticator): RedirectResponse
     {
         $request->getSession()->set('twitch_referer', $request->headers->get('referer'));
 

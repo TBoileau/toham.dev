@@ -27,6 +27,7 @@
     "symfony/serializer": "6.3.*",
     "symfony/twig-bundle": "6.3.*",
     "symfony/ux-react": "^2.13",
+    "symfony/ux-twig-component": "^2.13",
     "symfony/validator": "6.3.*",
     "symfony/webpack-encore-bundle": "^2.1",
     "symfony/yaml": "6.3.*",
