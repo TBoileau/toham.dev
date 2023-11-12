@@ -4,8 +4,8 @@ controllers:
     namespace: App\Controller
   type: attribute
 
-chat:
-  path: /chat
+twitch_chat:
+  path: /twitch/chat
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
-    template: 'chat.html.twig'
+    template: 'twitch/chat.html.twig'
