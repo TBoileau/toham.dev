@@ -1,15 +1,15 @@
-<div {{ attributes }} class="overlay" data-overlay="just_chatting">
+<div {{ attributes }} class="overlay" data-overlay="faq">
     <h1 class="overlay-title">twitch.tv/toham</h1>
-    <section class="overlay-chat chat">
-        <div class="chat-title">
-            <h1>Chat</h1>
-            <hr/>
-        </div>
-        <div class="chat-messages" {{ react_component('Chat') }}></div>
-    </section>
-    <div class="overlay-camera"></div>
+    <div class="overlay-screen"></div>
+    <div class="overlay-camera">
+        <h1>FAQ</h1>
+    </div>
+    <div class="overlay-question question">
+        <h1 class="question-title">Question</h1>
+        <span class="question-username">test</span>
+        <p class="question-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pretium tristique urna a ornare. Duis venenatis ac justo eu efficitur. Donec sem arcu, posuere vitae metus sit amet, semper porta mauris.</p>
+    </div>
     <div class="overlay-social-networks">
-        <h1>Toham</h1>
         <article class="social-network">
             <span class="icon">
                 <svg width="32" viewBox="0 0 300 271" fill="#002156" xmlns="http://www.w3.org/2000/svg">
@@ -27,6 +27,7 @@
                     </path>
                     <path d="m105 55-40.8-23.4v46.8z" fill="#fff"></path>
                 </svg>
+
             </span>
             <span class="top">Tous mes replays sur Youtube</span>
             <span class="bottom">{{ social_networks.youtube }}</span>
@@ -43,20 +44,6 @@
             </span>
             <span class="top">Tous mes projets sur Github</span>
             <span class="bottom">{{ social_networks.github }}</span>
-        </article>
-    </div>
-    <div class="overlay-community community">
-        <article class="community-item">
-            <h2>Last subscriber</h2>
-            <span>{{ this.lastSubscriber }}</span>
-        </article>
-        <article class="community-item">
-            <h2>Last follower</h2>
-            <span>{{ this.lastFollower }}</span>
-        </article>
-        <article class="community-item">
-            <h2>Top cheers</h2>
-            <span>{{ this.topCheers }}</span>
         </article>
     </div>
 </div>
