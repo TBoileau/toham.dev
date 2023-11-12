@@ -1,0 +1,165 @@
+body:has([data-overlay=just_chatting]) {
+  $orange: #FF8D74;
+  background-image: url(../../../images/background.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: Thunder, sans-serif;
+
+  .overlay {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    .overlay-title {
+      position: absolute;
+      top: 34px;
+      right: 70px;
+      display: flex;
+      align-items: center;
+      color: white;
+      text-transform: uppercase;
+      font-family: Monumemt, sans-serif;
+      font-size: 1rem;
+      gap: 1rem;
+
+      &:before {
+        width: 100px;
+        height: 3px;
+        background: $orange;
+        border-radius: 2px;
+        content: "";
+      }
+    }
+
+    .overlay-chat {
+      position: absolute;
+      top: 75px;
+      right: 30px;
+      width: 475px;
+      height: 777px;
+      z-index: 2;
+    }
+
+    .overlay-camera {
+      position: absolute;
+      top: 75px;
+      left: 0;
+      width: 1381.33px;
+      height: 777px;
+      background: linear-gradient(#000000, #000000) padding-box, linear-gradient(90deg, $orange 0%, rgba(255, 230, 224, 1) 45%, rgba(255, 255, 255, 1) 50%, rgba(255, 232, 227, 1) 55%, $orange 100%) border-box;
+      border: 4px solid transparent;
+      border-radius: 0 1rem 1rem 0;
+      $border: 6px;
+    }
+
+    .overlay-social-networks {
+      position: absolute;
+      bottom: 95px;
+      left: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 1100px;
+      height: 110px;
+
+      h1 {
+        padding-top: 20px;
+        color: #FFFFFF;
+        text-transform: uppercase;
+        font-size: 7rem;
+        font-weight: bold;
+      }
+
+      .social-network {
+        display: grid;
+        grid-row-gap: .25rem;
+        grid-column-gap: 1rem;
+        grid-template-columns: 60px 1fr;
+        grid-template-rows: 27px 1fr;
+
+        .icon {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          grid-area: 1 / 1 / 3 / 2;
+          width: 60px;
+          height: 76px;
+          background: #FFFFFF;
+          border-radius: 12px;
+        }
+
+        .top {
+          display: flex;
+          justify-content: flex-start;
+          align-items: flex-end;
+          grid-area: 1 / 2 / 2 / 3;
+          color: $orange;
+          text-transform: uppercase;
+          font-size: 1rem;
+        }
+
+        .bottom {
+          display: flex;
+          justify-content: flex-start;
+          align-items: flex-start;
+          grid-area: 2 / 2 / 3 / 3;
+          color: #FFFFFF;
+          text-transform: uppercase;
+          font-size: 2rem;
+        }
+      }
+    }
+
+    .overlay-community {
+      position: absolute;
+      bottom: 21px;
+      left: 0;
+      display: flex;
+      width: 100%;
+      height: 48px;
+      padding: .15rem 2rem 0;
+      background: linear-gradient(90deg, rgba(255, 255, 255, .3) 0%, rgba(255, 255, 255, .25) 80%, rgba(255, 255, 255, 0) 100%);
+
+      .community-item {
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding: 0 5rem;
+        color: #FFFFFF;
+        text-transform: uppercase;
+        font-family: Monumemt, sans-serif;
+        gap: 1rem;
+
+        &:after {
+          position: absolute;
+          top: calc(50% - 16px);
+          right: 0;
+          width: 1px;
+          height: 32px;
+          background: rgba(255, 255, 255, .3);
+          border-radius: .5px;
+          content: "";
+        }
+
+        &:first-child {
+          padding-left: 0;
+        }
+
+        &:last-child {
+          padding-right: 0;
+
+          &:after {
+            content: unset;
+          }
+        }
+
+        span {
+          color: $orange;
+          font-size: 1.5rem;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
