@@ -9,11 +9,8 @@ Encore
   .setPublicPath('/build')
   .addEntry('app', './assets/app.js')
   .splitEntryChunks()
-
-    .enableReactPreset()
-
-    // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
-    .enableStimulusBridge('./assets/controllers.json')
+  .enableReactPreset()
+  .enableStimulusBridge('./assets/controllers.json')
   .enableSingleRuntimeChunk()
   .cleanupOutputBeforeBuild()
   .enableBuildNotifications()
@@ -23,6 +20,7 @@ Encore
     config.useBuiltIns = 'usage';
     config.corejs = '3.23';
   })
+  .enableSassLoader()
 ;
 
 module.exports = Encore.getWebpackConfig();

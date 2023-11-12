@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="chat">
+        <div class="chat-title">
+            <h1>Chat</h1>
+            <hr/>
+        </div>
+        <div class="chat-messages" {{ react_component('Chat') }}></div>
+    </section>
+{% endblock %}
