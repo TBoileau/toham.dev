@@ -4,37 +4,37 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Twitch\OAuth\Model\TwitchAuthorization;
+use App\Twitch\OAuth\TwitchAuthenticatorInterface;
+use App\Twitch\TwitchProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGenerator;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 #[Route('/twitch', name: 'twitch_')]
 final class TwitchController extends AbstractController
 {
     #[Route('/get-authorization', name: 'get_authorization', methods: [Request::METHOD_GET])]
-    public function getAuthorization(string $twitchClientId, CsrfTokenManagerInterface $csrfTokenManager): RedirectResponse
+    public function getAuthorization(Request $request, TwitchAuthenticatorInterface $twitchAuthenticator, TwitchProviderInterface $twitchProvider): RedirectResponse
     {
-        $query = http_build_query([
-            'client_id' => $twitchClientId,
-            'redirect_uri' => $this->generateUrl('twitch_authorize', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            'response_type' => 'code',
-            'scope' => 'channel:read:subscriptions',
-            'state' => (string) $csrfTokenManager->getToken('twitch-state'),
-        ]);
+        $request->getSession()->set('twitch_referer', $request->headers->get('referer'));
 
-        $url = sprintf('https://id.twitch.tv/oauth2/authorize?%s', $query);
-
-        return $this->redirect($url);
+        return $this->redirect($twitchAuthenticator->generateAuthorizationUrl());
     }
 
     #[Route('/authorize', name: 'authorize', methods: [Request::METHOD_GET])]
-    public function authorize(Request $request): RedirectResponse
-    {
+    public function authorize(
+        #[MapQueryString] TwitchAuthorization $twitchAuthorization,
+        TwitchAuthenticatorInterface $twitchAuthenticator,
+        Request $request
+    ): RedirectResponse {
+        $twitchAuthenticator->authorize($twitchAuthorization);
 
-        dd($request);
+        /** @var string|null $redirectUrl */
+        $redirectUrl = $request->getSession()->get('twitch_referer');
+
+        return $this->redirect($redirectUrl ?? $this->generateUrl('home'));
     }
 }
