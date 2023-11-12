@@ -25,7 +25,7 @@ final class TwitchApi implements TwitchApiInterface
         $this->createClient();
     }
 
-    public function request(string $uri, array $query = []): mixed
+    public function request(string $uri, array $query = []): array
     {
         try {
             $response = $this->httpClient->request(Request::METHOD_GET, $uri, ['query' => $query]);

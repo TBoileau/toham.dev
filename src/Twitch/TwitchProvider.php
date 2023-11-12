@@ -12,7 +12,9 @@ final readonly class TwitchProvider implements TwitchProviderInterface
 
     public function getLastSubscriber(): string
     {
-        /** @var array{data: array<array-key, array{user_name: string}>} $response */
+        /**
+         * @var array{data: array<array-key, array{user_name: string}>} $response
+         */
         $response = $this->twitchApi->request('/helix/subscriptions', [
             'broadcaster_id' => $this->twitchBroadcasterId,
             'first' => 1,
@@ -23,7 +25,9 @@ final readonly class TwitchProvider implements TwitchProviderInterface
 
     public function getLastFollower(): string
     {
-        /** @var array{data: array<array-key, array{user_name: string}>} $response */
+        /**
+         * @var array{data: array<array-key, array{user_name: string}>} $response
+         */
         $response = $this->twitchApi->request('/helix/channels/followers', [
             'broadcaster_id' => $this->twitchBroadcasterId,
             'first' => 1,
@@ -34,7 +38,9 @@ final readonly class TwitchProvider implements TwitchProviderInterface
 
     public function getTopCheers(): string
     {
-        /** @var array{data: array<array-key, array{user_name: string}>} $response */
+        /**
+         * @var array{data: array<array-key, array{user_name: string}>} $response
+         */
         $response = $this->twitchApi->request('/helix/bits/leaderboard', [
             'count' => 1,
         ]);

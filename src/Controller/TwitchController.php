@@ -8,7 +8,6 @@ use App\Twitch\OAuth\Model\TwitchAuthorization;
 use App\Twitch\OAuth\TwitchAuthenticatorInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

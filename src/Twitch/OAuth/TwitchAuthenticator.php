@@ -95,6 +95,7 @@ final readonly class TwitchAuthenticator implements TwitchAuthenticatorInterface
 
     /**
      * @param array{client_id: string, client_secret: string, grant_type: string, code?: string, refresh_token?: string, redirect_uri?: string} $body
+     *
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
      * @throws RedirectionExceptionInterface
