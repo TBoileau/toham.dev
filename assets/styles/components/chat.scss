@@ -21,17 +21,17 @@
     gap: 2rem;
 
     > h1 {
-      width: 150px;
-      height: 2px;
-      background: #FFFFFF;
       color: #FFFFFF;
-      text-transform: uppercase
+      text-transform: uppercase;
+      font-size: 2rem;
+      line-height: 2rem;
     }
 
     > hr {
-      font-size: 2rem;
-      line-height: 2rem;
+      background: #FFFFFF;
       content: '';
+      width: 150px;
+      height: 2px;
     }
   }
 

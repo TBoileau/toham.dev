@@ -41,7 +41,7 @@ final readonly class TwitchAuthenticator implements TwitchAuthenticatorInterface
             'client_id' => $this->twitchClientId,
             'redirect_uri' => $this->urlGenerator->generate('twitch_authorize', [], UrlGeneratorInterface::ABSOLUTE_URL),
             'response_type' => 'code',
-            'scope' => 'channel:read:subscriptions moderator:read:followers bits:read',
+            'scope' => 'channel:read:subscriptions moderator:read:followers bits:read channel:read:goals',
             'state' => (string) $this->csrfTokenManager->getToken('twitch-state'),
         ]);
 
