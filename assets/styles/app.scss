@@ -10,10 +10,10 @@
 /** Components **/
 @import 'components/chat';
 @import 'components/question';
-
-/** Pages **/
-@import 'pages/chat';
-@import 'pages/overlay';
-
-/** Themes **/
-@import 'themes/overlays';
+@import 'components/camera';
+@import 'components/screen';
+@import 'components/community';
+@import 'components/social_network';
+@import 'components/title';
+@import 'components/background';
+@import 'components/icons';

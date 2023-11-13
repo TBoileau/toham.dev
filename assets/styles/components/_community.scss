@@ -1,0 +1,47 @@
+.community {
+  display: flex;
+  width: 100%;
+  height: 48px;
+  padding: .15rem 2rem 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, .3) 0%, rgba(255, 255, 255, .25) 80%, rgba(255, 255, 255, 0) 100%);
+
+  .community-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 5rem;
+    color: $white;
+    text-transform: uppercase;
+    font-family: Monumemt, sans-serif;
+    gap: 1rem;
+
+    &:after {
+      position: absolute;
+      top: calc(50% - 16px);
+      right: 0;
+      width: 1px;
+      height: 32px;
+      background: rgba(255, 255, 255, .3);
+      border-radius: .5px;
+      content: "";
+    }
+
+    &:first-child {
+      padding-left: 0;
+    }
+
+    &:last-child {
+      padding-right: 0;
+
+      &:after {
+        content: unset;
+      }
+    }
+
+    span {
+      color: $orange;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+  }
+}
