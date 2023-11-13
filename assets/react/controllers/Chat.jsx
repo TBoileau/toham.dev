@@ -16,7 +16,6 @@ export default function () {
   });
 
   client.on('message', (channel, tags, message) => {
-    console.log(tags)
     setMessages((messages) => [...messages, {tags, content: parse(message, tags.emotes, emoteOptions)}]);
   });
 

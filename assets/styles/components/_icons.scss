@@ -1,0 +1,21 @@
+.icon {
+  &-x {
+    fill: $blue;
+  }
+
+  &-github {
+    > path {
+      fill: $blue;
+    }
+  }
+
+  &-youtube {
+    > path:first-child {
+      fill: $blue;
+    }
+
+    > path:last-child {
+      fill: $white;
+    }
+  }
+}
