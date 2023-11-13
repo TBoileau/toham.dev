@@ -1,0 +1,12 @@
+.screen {
+  box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+  aspect-ratio: 16/9;
+  background: linear-gradient(#000000, #000000) padding-box, linear-gradient(90deg, $orange 0%, rgba(255, 230, 224, 1) 45%, rgba(255, 255, 255, 1) 50%, rgba(255, 232, 227, 1) 55%, $orange 100%) border-box;
+  border: $overlay-border solid transparent;
+  border-radius: $border-radius;
+
+  &[data-full=false] {
+    border-left: 0;
+    border-radius: 0 $border-radius $border-radius 0;
+  }
+}

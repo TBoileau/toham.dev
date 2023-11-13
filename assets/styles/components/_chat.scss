@@ -1,9 +1,38 @@
 .chat {
   position: relative;
-  display: flex;
-  flex-direction: column;
   width: 100%;
   height: 100%;
+  padding: 2rem 2rem 2rem 3rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+  background: $blue;
+  background: linear-gradient(90deg, rgba($lightblue, .8) 0%, rgba($blue, .8) 50%);
+  border-radius: $border-radius;
+  font-family: Thunder, sans-serif;
+  overflow: hidden;
+
+  > .chat-title {
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    font-size: 2rem;
+    transform: rotate(-90deg) translate(0, 100%);
+    transform-origin: bottom left;
+    position: absolute;
+    left: calc(.5rem + 2.5px);
+    bottom: 2rem;
+    white-space: nowrap;
+    gap: 2rem;
+
+    &:after {
+      width: 150px;
+      height: 2px;
+      margin-top: -5px;
+      border-radius: 1px;
+      background: #FFFFFF;
+      content: '';
+    }
+  }
 
   > .chat-messages {
     display: flex;

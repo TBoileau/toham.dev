@@ -6,7 +6,7 @@ namespace App\Twitch\Overlay;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent('twitch_overlay_video', template: 'twitch/overlays/video.html.twig')]
-final class VideoComponent
+#[AsTwigComponent('twitch_overlay_screen', template: 'components/twitch/screen.html.twig')]
+final class ScreenComponent
 {
 }
