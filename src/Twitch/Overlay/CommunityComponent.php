@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Twitch\Overlay;
 
+use App\Twitch\Api\Endpoint\Bits\BitsOperations;
+use App\Twitch\Api\Endpoint\Channel\ChannelOperations;
+use App\Twitch\Api\Endpoint\Subscriptions\SubscriptionsOperations;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use TBoileau\TwitchApi\Api\Endpoint\Bits\Leader;
 use TBoileau\TwitchApi\Api\Endpoint\Channel\Follower;
@@ -11,47 +14,33 @@ use TBoileau\TwitchApi\Api\Endpoint\Subscriptions\Subscription;
 use TBoileau\TwitchApi\Api\TwitchApiInterface;
 
 #[AsTwigComponent('twitch_overlay_community', template: 'components/twitch/community.html.twig')]
-final class CommunityComponent
+final readonly class CommunityComponent
 {
-    public function __construct(
-        private readonly TwitchApiInterface $twitchApi,
-        private readonly string $twitchBroadcasterId
-    ) {
+    public function __construct(private TwitchApiInterface $twitchApi)
+    {
     }
 
-    public function getLastSubscriber(): string
+    public function getLastSubscriber(): ?Subscription
     {
-        /** @var array<Subscription> $subscribers */
-        $subscribers = $this->twitchApi->Subscriptions->getBroadcasterSubscriptions($this->twitchBroadcasterId)->getIterator();
+        /** @var SubscriptionsOperations $operations */
+        $operations = $this->twitchApi->Subscriptions;
 
-        if (0 === count($subscribers)) {
-            return '';
-        }
-
-        return $subscribers[0]->userName;
+        return $operations->getLastSubscriber();
     }
 
-    public function getLastFollower(): string
+    public function getLastFollower(): ?Follower
     {
-        /** @var array<Follower> $followers */
-        $followers = $this->twitchApi->Channel->getFollowers($this->twitchBroadcasterId)->getIterator();
+        /** @var ChannelOperations $operations */
+        $operations = $this->twitchApi->Channel;
 
-        if (0 === count($followers)) {
-            return '';
-        }
-
-        return $followers[0]->userName;
+        return $operations->getLastFollower();
     }
 
-    public function getTopCheers(): string
+    public function getTopCheers(): ?Leader
     {
-        /** @var array<Leader> $leaderboard */
-        $leaderboard = $this->twitchApi->Bits->getLeaderboard()->getIterator();
+        /** @var BitsOperations $operations */
+        $operations = $this->twitchApi->Bits;
 
-        if (0 === count($leaderboard)) {
-            return '';
-        }
-
-        return $leaderboard[0]->userName;
+        return $operations->getTopCheers();
     }
 }
