@@ -1,3 +1,5 @@
 <section {{ attributes }} class="camera">
-    <h1>Gaming</h1>
+    {% if title is not null %}
+        <h1>{{ title }}</h1>
+    {% endif %}
 </section>
