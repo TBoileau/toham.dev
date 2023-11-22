@@ -6,7 +6,6 @@ namespace App\Twitch\OAuth;
 
 use App\Twitch\OAuth\Model\TwitchAuthorization;
 use App\Twitch\OAuth\Model\TwitchToken;
-use Symfony\Component\Cache\Exception\CacheException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -74,7 +73,7 @@ final readonly class TwitchAuthenticator implements TwitchAuthenticatorInterface
     {
         $this->cache->get('twitch_token', function (ItemInterface $item): TwitchToken {
             if (!$item->isHit()) {
-                throw new CacheException(sprintf('Item "%s" not found in cache.', $item->getKey()));
+                throw new TokenNotFoundException(sprintf('Item "%s" not found in cache.', $item->getKey()));
             }
 
             /** @var TwitchToken $token */
@@ -120,9 +119,11 @@ final readonly class TwitchAuthenticator implements TwitchAuthenticatorInterface
         /** @var array{access_token: string, expires_in: int, refresh_token: string, scope: array<array-key, string>, token_type: string} $rawToken */
         $rawToken = $response->toArray(false);
 
+        $expiresIn = new \DateTimeImmutable(sprintf('+%d seconds', $rawToken['expires_in']));
+
         return new TwitchToken(
             $rawToken['access_token'],
-            $rawToken['expires_in'],
+            (int) $expiresIn->format('U'),
             $rawToken['refresh_token'],
             $rawToken['scope'],
             $rawToken['token_type']

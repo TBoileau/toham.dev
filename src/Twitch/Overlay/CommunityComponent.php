@@ -4,32 +4,54 @@ declare(strict_types=1);
 
 namespace App\Twitch\Overlay;
 
-use App\Twitch\TwitchProviderInterface;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
+use TBoileau\TwitchApi\Api\Endpoint\Bits\Leader;
+use TBoileau\TwitchApi\Api\Endpoint\Channel\Follower;
+use TBoileau\TwitchApi\Api\Endpoint\Subscriptions\Subscription;
+use TBoileau\TwitchApi\Api\TwitchApiInterface;
 
-/**
- * @method string getLastSubscriber()
- * @method string getLastFollower()
- * @method string getTopCheers()
- */
 #[AsTwigComponent('twitch_overlay_community', template: 'components/twitch/community.html.twig')]
 final class CommunityComponent
 {
-    public function __construct(protected readonly TwitchProviderInterface $twitchProvider)
-    {
+    public function __construct(
+        private readonly TwitchApiInterface $twitchApi,
+        private readonly string $twitchBroadcasterId
+    ) {
     }
 
-    /**
-     * @param array<string, mixed> $args
-     */
-    public function __call(string $name, array $args): string
+    public function getLastSubscriber(): string
     {
-        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        /** @var array<Subscription> $subscribers */
+        $subscribers = $this->twitchApi->Subscriptions->getBroadcasterSubscriptions($this->twitchBroadcasterId)->getIterator();
 
-        /** @var string $value */
-        $value = $propertyAccessor->getValue($this->twitchProvider, $name);
+        if (0 === count($subscribers)) {
+            return '';
+        }
 
-        return $value;
+        return $subscribers[0]->userName;
+    }
+
+    public function getLastFollower(): string
+    {
+        /** @var array<Follower> $followers */
+        $followers = $this->twitchApi->Channel->getFollowers($this->twitchBroadcasterId)->getIterator();
+
+        if (0 === count($followers)) {
+            return '';
+        }
+
+        return $followers[0]->userName;
+    }
+
+    public function getTopCheers(): string
+    {
+        /** @var array<Leader> $leaderboard */
+        $leaderboard = $this->twitchApi->Bits->getLeaderboard()->getIterator();
+
+        if (0 === count($leaderboard)) {
+            return '';
+        }
+
+        return $leaderboard[0]->userName;
     }
 }

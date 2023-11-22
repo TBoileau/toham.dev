@@ -17,4 +17,9 @@ final class TwitchToken
         public readonly string $tokenType
     ) {
     }
+
+    public function isExpired(): bool
+    {
+        return $this->expiresIn < time();
+    }
 }
