@@ -2,9 +2,6 @@ parameters:
   twitch.client.id: '%env(TWITCH_API_CLIENT_ID)%'
   twitch.client.secret: '%env(TWITCH_API_CLIENT_SECRET)%'
   twitch.broadcaster_id: '%env(TWITCH_BROADCASTER_ID)%'
-  social_networks.youtube: '@@toham'
-  social_networks.twitter: '@@toham_tech'
-  social_networks.github: '@@TBoileau'
 
 services:
   _defaults:

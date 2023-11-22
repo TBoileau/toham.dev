@@ -1,10 +1,5 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
-    globals:
-        social_networks:
-            youtube: '%social_networks.youtube%'
-            twitter: '%social_networks.twitter%'
-            github: '%social_networks.github%'
 
 when@test:
     twig:
