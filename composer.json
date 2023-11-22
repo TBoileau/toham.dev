@@ -26,6 +26,7 @@
     "symfony/security-bundle": "6.3.*",
     "symfony/serializer": "6.3.*",
     "symfony/twig-bundle": "6.3.*",
+    "symfony/ux-live-component": "^2.13",
     "symfony/ux-react": "^2.13",
     "symfony/ux-twig-component": "^2.13",
     "symfony/validator": "6.3.*",
@@ -114,6 +115,7 @@
   "require-dev": {
     "dama/doctrine-test-bundle": "^7.2",
     "doctrine/doctrine-fixtures-bundle": "^3.4",
+    "fakerphp/faker": "^1.23",
     "friendsofphp/php-cs-fixer": "^3.38",
     "phpstan/phpstan": "^1.10",
     "phpstan/phpstan-deprecation-rules": "^1.1",

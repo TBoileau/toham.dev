@@ -5,7 +5,7 @@
   border: $overlay-border solid transparent;
   border-radius: $border-radius;
 
-  &[data-full=false] {
+  &[data-full='0'] {
     border-left: 0;
     border-radius: 0 $border-radius $border-radius 0;
   }
