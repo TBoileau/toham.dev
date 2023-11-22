@@ -1,6 +1,6 @@
 parameters:
-  twitch.client.id: '%env(TWITCH_CLIENT_ID)%'
-  twitch.client.secret: '%env(TWITCH_CLIENT_SECRET)%'
+  twitch.client.id: '%env(TWITCH_API_CLIENT_ID)%'
+  twitch.client.secret: '%env(TWITCH_API_CLIENT_SECRET)%'
   twitch.broadcaster_id: '%env(TWITCH_BROADCASTER_ID)%'
   social_networks.youtube: '@@toham'
   social_networks.twitter: '@@toham_tech'
@@ -21,3 +21,27 @@ services:
       - "../src/DependencyInjection/"
       - "../src/Entity/"
       - "../src/Kernel.php"
+
+  TBoileau\TwitchApi\:
+    resource: "../vendor/tboileau/twitch-api/src/"
+    exclude:
+      - "../vendor/tboileau/twitch-api/src/Command"
+      - "../vendor/tboileau/twitch-api/src/Test"
+
+
+  TBoileau\TwitchApi\Api\TwitchApiInterface:
+    class: TBoileau\TwitchApi\Api\TwitchApi
+    arguments:
+      -  !tagged_iterator {tag: twitch.api.operations, default_index_method: getName}
+
+  TBoileau\TwitchApi\HttpClient:
+    factory: ['App\Twitch\HttpClientFactory', 'create']
+    arguments:
+      $baseUri: '%env(TWITCH_API_BASE_URI)%'
+      $clientId: '%env(TWITCH_API_CLIENT_ID)%'
+
+  _instanceof:
+    TBoileau\TwitchApi\Api\Endpoint\AbstractOperations:
+      tags: ['twitch.api.operations']
+      calls:
+        - [setHttpClient, ['@TBoileau\TwitchApi\HttpClient']]
