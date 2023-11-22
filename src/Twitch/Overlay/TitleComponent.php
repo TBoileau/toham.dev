@@ -9,4 +9,5 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 #[AsTwigComponent('twitch_overlay_title', template: 'components/twitch/title.html.twig')]
 final class TitleComponent
 {
+    public string $title;
 }
