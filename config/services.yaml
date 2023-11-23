@@ -15,6 +15,8 @@ services:
   _instanceof:
     TBoileau\TwitchApi\Api\Endpoint\AbstractOperations:
       tags: ['twitch.api.operations']
+    App\ChatBot\CommandHandlerInterface:
+      tags: ['twitch.chat_bot.command_handler']
 
   App\:
     resource: "../src/"
@@ -26,8 +28,17 @@ services:
   TBoileau\TwitchApi\:
     resource: "../vendor/tboileau/twitch-api/src/"
     exclude:
-      - "../vendor/tboileau/twitch-api/src/Command"
+      - "../vendor/tboileau/twitch-api/src/Message"
       - "../vendor/tboileau/twitch-api/src/Test"
+
+  TBoileau\TwitchApi\Command\InstallTwitchCliCommand:
+    arguments:
+      $twitchCliDir: '%kernel.project_dir%/var/twitch-cli'
+
+  TBoileau\TwitchApi\Command\ServeTwitchMockServerCommand:
+    arguments:
+      $twitchCliPath: '%kernel.project_dir%/var/twitch-cli/twitch'
+      $twitchMockServerPort: '%env(TWITCH_MOCK_SERVER_PORT)%'
 
   TBoileau\TwitchApi\Api\TwitchApiInterface:
     class: TBoileau\TwitchApi\Api\TwitchApi
@@ -43,6 +54,10 @@ services:
   App\Twitch\OAuth\TwitchAuthenticator:
     arguments:
       $operations: !tagged_iterator twitch.api.operations
+
+  App\Command\TwitchChatBotCommand:
+    arguments:
+      $commandHandlers: !tagged_iterator twitch.chat_bot.command_handler
 
   GhostZero\Tmi\Client:
     factory: ['App\Tmi\ClientFactory', 'create']
