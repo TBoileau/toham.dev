@@ -28,6 +28,15 @@ class Question
     #[Column]
     private bool $answered = false;
 
+    public static function create(string $username, string $content)
+    {
+        $question = new self();
+        $question->setUsername($username);
+        $question->setContent($content);
+
+        return $question;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

@@ -21,17 +21,25 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use TBoileau\TwitchApi\Api\Endpoint\AbstractOperations;
 
-final readonly class TwitchAuthenticator implements TwitchAuthenticatorInterface
+final class TwitchAuthenticator implements TwitchAuthenticatorInterface
 {
+    /**
+     * @var array<array-key, AbstractOperations>
+     */
+    private array $operations;
+
     public function __construct(
-        private UrlGeneratorInterface $urlGenerator,
-        private CsrfTokenManagerInterface $csrfTokenManager,
-        private HttpClientInterface $httpClient,
-        private CacheInterface $cache,
-        private string $twitchClientId,
-        private string $twitchClientSecret,
+        iterable $operations,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly CsrfTokenManagerInterface $csrfTokenManager,
+        private readonly HttpClientInterface $httpClient,
+        private readonly CacheInterface $cache,
+        private readonly string $twitchClientId,
+        private readonly string $twitchClientSecret,
     ) {
+        $this->operations = iterator_to_array($operations);
     }
 
     public function generateAuthorizationUrl(): string
@@ -40,7 +48,12 @@ final readonly class TwitchAuthenticator implements TwitchAuthenticatorInterface
             'client_id' => $this->twitchClientId,
             'redirect_uri' => $this->urlGenerator->generate('twitch_authorize', [], UrlGeneratorInterface::ABSOLUTE_URL),
             'response_type' => 'code',
-            'scope' => 'channel:read:subscriptions moderator:read:followers bits:read channel:read:goals',
+            'scope' => implode(' ', array_merge(['chat:read', 'chat:edit'],
+                ...array_map(
+                    fn (AbstractOperations $operations): array => $operations->getScopes(),
+                    $this->operations
+                )
+            )),
             'state' => (string) $this->csrfTokenManager->getToken('twitch-state'),
         ]);
 
@@ -53,43 +66,44 @@ final readonly class TwitchAuthenticator implements TwitchAuthenticatorInterface
             throw new InvalidCsrfTokenException('Invalid CSRF token.');
         }
 
-        $token = $this->getToken([
+        $this->setToken($this->fetchToken([
             'client_id' => $this->twitchClientId,
             'client_secret' => $this->twitchClientSecret,
             'code' => $twitchAuthorization->code,
             'grant_type' => 'authorization_code',
             'redirect_uri' => $this->urlGenerator->generate('twitch_authorize', [], UrlGeneratorInterface::ABSOLUTE_URL),
-        ]);
-
-        $this->cache->get('twitch_token', function (ItemInterface $item) use ($token): TwitchToken {
-            $item->expiresAfter($token->expiresIn);
-            $item->set($token);
-
-            return $token;
-        });
+        ]));
     }
 
     public function refresh(): void
     {
-        $this->cache->get('twitch_token', function (ItemInterface $item): TwitchToken {
+        if (null === $this->token) {
+            throw new TokenNotFoundException('No token found.');
+        }
+
+        $this->setToken($this->fetchToken([
+            'client_id' => $this->twitchClientId,
+            'client_secret' => $this->twitchClientSecret,
+            'refresh_token' => $this->token->refreshToken,
+            'grant_type' => 'refresh_token',
+        ]));
+    }
+
+    public function getToken(): TwitchToken
+    {
+        $token = $this->cache->get('twitch_token', function (ItemInterface $item): TwitchToken {
             if (!$item->isHit()) {
-                throw new TokenNotFoundException(sprintf('Item "%s" not found in cache.', $item->getKey()));
+                throw new TokenNotFoundException('No token found.');
             }
 
-            /** @var TwitchToken $token */
-            $token = $item->get();
-
-            $token = $this->getToken([
-                'client_id' => $this->twitchClientId,
-                'client_secret' => $this->twitchClientSecret,
-                'refresh_token' => $token->refreshToken,
-                'grant_type' => 'refresh_token',
-            ]);
-
-            $item->set($token);
-
-            return $token;
+            return $item->get();
         });
+
+        if ($token->isExpired()) {
+            $this->refresh();
+        }
+
+        return $token;
     }
 
     /**
@@ -101,7 +115,7 @@ final readonly class TwitchAuthenticator implements TwitchAuthenticatorInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    private function getToken(array $body): TwitchToken
+    private function fetchToken(array $body): TwitchToken
     {
         $response = $this->httpClient->request(Request::METHOD_POST, 'https://id.twitch.tv/oauth2/token', [
             'headers' => [
@@ -128,5 +142,16 @@ final readonly class TwitchAuthenticator implements TwitchAuthenticatorInterface
             $rawToken['scope'],
             $rawToken['token_type']
         );
+    }
+
+    private function setToken(TwitchToken $token): void
+    {
+        $this->cache->delete('twitch_token');
+
+        $this->cache->get('twitch_token', function (ItemInterface $item) use ($token): TwitchToken {
+            $item->set($token);
+
+            return $token;
+        });
     }
 }
