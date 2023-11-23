@@ -12,6 +12,10 @@ services:
       string $twitchClientSecret: '%twitch.client.secret%'
       string $twitchBroadcasterId: '%twitch.broadcaster_id%'
 
+  _instanceof:
+    TBoileau\TwitchApi\Api\Endpoint\AbstractOperations:
+      tags: ['twitch.api.operations']
+
   App\:
     resource: "../src/"
     exclude:
@@ -25,7 +29,6 @@ services:
       - "../vendor/tboileau/twitch-api/src/Command"
       - "../vendor/tboileau/twitch-api/src/Test"
 
-
   TBoileau\TwitchApi\Api\TwitchApiInterface:
     class: TBoileau\TwitchApi\Api\TwitchApi
     arguments:
@@ -37,8 +40,9 @@ services:
       $baseUri: '%env(TWITCH_API_BASE_URI)%'
       $clientId: '%env(TWITCH_API_CLIENT_ID)%'
 
-  _instanceof:
-    TBoileau\TwitchApi\Api\Endpoint\AbstractOperations:
-      tags: ['twitch.api.operations']
-      calls:
-        - [setHttpClient, ['@TBoileau\TwitchApi\HttpClient']]
+  App\Twitch\OAuth\TwitchAuthenticator:
+    arguments:
+      $operations: !tagged_iterator twitch.api.operations
+
+  GhostZero\Tmi\Client:
+    factory: ['App\Tmi\ClientFactory', 'create']
