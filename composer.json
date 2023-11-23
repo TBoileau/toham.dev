@@ -26,6 +26,7 @@
     "symfony/runtime": "6.3.*",
     "symfony/security-bundle": "6.3.*",
     "symfony/serializer": "6.3.*",
+    "symfony/string": "6.3.*",
     "symfony/twig-bundle": "6.3.*",
     "symfony/ux-live-component": "^2.13",
     "symfony/ux-react": "^2.13",
