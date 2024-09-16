@@ -1,0 +1,14 @@
+{
+  "site": {
+    "baseUrl": "/",
+    "language": "fr",
+    "title": "Toham's blog",
+    "description": "<your site description>",
+    "copyright": "© 2024 Thomas Boileau."
+  },
+  "memus":[],
+  "settings": {
+    "pagination": 6,
+    "blog_folder": "posts"
+  }
+}
